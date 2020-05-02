@@ -13,37 +13,34 @@ from bs4 import BeautifulSoup
 
 URL = 'https://www.exchangerates.org.uk/'
 
+currencies_table_indices = {
+        "EUR": 3,
+        "USD": 8,
+        "NZD": 13,
+        "AUD": 18,
+        "CAD": 23,
+        "JPY": 28,
+        "ZAR": 33,
+        "AED": 38,
+        "INR": 43,
+        "TRY": 48,
+        "CHF": 53
+        }
 
-
-# This function scrapes conversion rates between GBP(£) and some of the most 
-# common currencies in the world. The function takes one argument, gbp, that 
-# must be either an integar or a float. 
-def currency_func(gbp):
+'''This function scrapes conversion rates between GBP(£) and some of the most 
+common currencies in the world. The function takes two arguments: 'gbp' which
+can be a float or integar that notates the amount in gbp that we are wanting 
+to convert to a different currency , and 'currency' which is the currency 
+that the amount in gbp is to be converted to.''' 
+def currency_func(gbp,currency):
 
     page = requests.get(URL,'html.parser')
     soup = BeautifulSoup(page.content, 'html.parser')
     
     # Grabbing the desired div and table for which the desired data is housed
     table = soup.find('table')
-    
-    # Grabbing all of the desired table data 
-    eur_exch = float(table.find_all('td')[3].text)
-    usd_exch = float(table.find_all('td')[8].text)
-    nzd_exch = float(table.find_all('td')[13].text)
-    aud_exch = float(table.find_all('td')[18].text)
-    cad_exch = float(table.find_all('td')[23].text)
-    jpy_exch = float(table.find_all('td')[28].text)
-    zar_exch = float(table.find_all('td')[33].text)
-    aed_exch = float(table.find_all('td')[38].text)
-    inr_exch = float(table.find_all('td')[43].text)
-    try_exch = float(table.find_all('td')[48].text)
-    chf_exch = float(table.find_all('td')[53].text)
-    
-    exchange_rates = [eur_exch, usd_exch, nzd_exch, aud_exch, cad_exch,
-                      jpy_exch, zar_exch, aed_exch, inr_exch, try_exch,
-                      chf_exch]
-    
-    return [gbp * x for x in exchange_rates]
+     
+    return float(table.find_all('td')[currencies_table_indices[currency]].text) * gbp
 
 
 class BankAccount(object):
@@ -54,110 +51,26 @@ class BankAccount(object):
 
     
     def withdraw(self):
-        currency = str(input('''You may withdraw your money in the following currencies: 
-        GBP, EUR, USD, NZD, AUD, CAD, JPY, ZAR, AED, INR, TRY, CHF. 
-        What currency do you want to withdraw your money in? '''))
+        print('You may withdraw money from this ATM in the following currencies: ')
+        for value in currencies_table_indices:
+            print(value, end = ", ")
+        currency = str(input('Please select which of these currencies you would like to proceed with: '))
         
         # Should implement error handling here for when an invalid currency is entered.
         
         while True:
            withdraw_amount = float(input('How many ' + currency.upper() + 's would you like to withdraw? '))
            
-           # Each if statement calculates the withdrawal amount in GBP for any of the given currencies
-           # Should try to make this portion of the program more elegent with a function
-           
-           if currency.upper() == 'EUR':
-               withdraw_amount /= float(currency_func(1)[0])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'USD':
-               withdraw_amount /= float(currency_func(1)[1])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'NZD':
-               withdraw_amount /= float(currency_func(1)[2])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'AUD':
-               withdraw_amount /= float(currency_func(1)[3])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'CAD':
-               withdraw_amount /= float(currency_func(1)[4])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'JPY':
-               withdraw_amount /= float(currency_func(1)[5])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'ZAR':
-               withdraw_amount /= float(currency_func(1)[6])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'AED':
-               withdraw_amount /= float(currency_func(1)[7])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'INR':
-               withdraw_amount /= float(currency_func(1)[8])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           elif currency.upper() == 'TRY':
-               withdraw_amount /= float(currency_func(1)[9])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-          
-           elif currency.upper() == 'CHF':
-               withdraw_amount /= float(currency_func(1)[10])
-               if withdraw_amount > self.balance:
-                   print("Insufficient funds. Enter again. ")
-               else:
-                   self.balance -= withdraw_amount
-                   break
-           
-           else:
+           if currency.upper() == "GBP":
                self.balance -= withdraw_amount
                break
-           
+           else:
+               withdraw_amount /= float(currency_func(1, currency.upper()))
+               if withdraw_amount > self.balance:
+                   print("Insufficient funds. Enter again. ")
+               else:
+                   self.balance -= withdraw_amount
+                   break           
            
         print(f'Withdraw successful. You now have a balance of £{str(round(self.balance, 2))}')
 
