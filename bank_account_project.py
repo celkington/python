@@ -8,22 +8,25 @@ currency exchange figures and return the amount remaining in the bank account
 in GBP. 
 '''
 
-#This function scrapes conversion rates between GBP(£) and some of the most 
-#common currencies in the world. The function takes one argument, gbp, that 
-#must be either an integar or a float. 
+import requests
+from bs4 import BeautifulSoup
+
+URL = 'https://www.exchangerates.org.uk/'
+
+
+
+# This function scrapes conversion rates between GBP(£) and some of the most 
+# common currencies in the world. The function takes one argument, gbp, that 
+# must be either an integar or a float. 
 def currency_func(gbp):
 
-    import requests
-    from bs4 import BeautifulSoup
-    
-    URL = 'https://www.exchangerates.org.uk/'
     page = requests.get(URL,'html.parser')
     soup = BeautifulSoup(page.content, 'html.parser')
     
-    #grabbing the desired div and table for which the desired data is housed
+    # Grabbing the desired div and table for which the desired data is housed
     table = soup.find('table')
     
-    #grabbing all of the desired table data 
+    # Grabbing all of the desired table data 
     eur_exch = float(table.find_all('td')[3].text)
     usd_exch = float(table.find_all('td')[8].text)
     nzd_exch = float(table.find_all('td')[13].text)
@@ -156,14 +159,14 @@ class BankAccount(object):
                break
            
            
-        print(f'Withdraw successful. You now have a balance of ' + '£' + str(round(self.balance, 2)))
+        print(f'Withdraw successful. You now have a balance of £{str(round(self.balance, 2))}')
 
     
     def deposit(self):
         deposit_amount = float(input("How many GBPs would you like to deposit? \n"))
         self.balance += deposit_amount
-        print(f'Deposit successful. You now have a balance of ' + '£' + str(round(self.balance, 2)))
+        print(f'Deposit successful. You now have a balance of £{str(round(self.balance, 2))}')
 
 
     def display(self):
-        print(f'You have a balance of ' + '£' + str(round(self.balance, 2)))
+        print(f'You have a balance of £{str(round(self.balance, 2))}')
