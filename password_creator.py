@@ -12,7 +12,7 @@ def validate():
         password_creation = input(str("Enter a password: "))
         if len(password_creation) < 8:
             print("Make sure your password is at lest 8 characters. ")
-        elif re.search('[0-9]', password_creation) is None:
+        elif re.search('\d', password_creation) is None:
             print("Make sure your password contains a number. ")
         elif re.search('[A-Z]', password_creation) is None:
             print("Make sure your password contains an upper case letter. ")
