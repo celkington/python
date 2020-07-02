@@ -7,7 +7,7 @@ height = 700
 border = 25
 VELOCITY = -1
 bgcolor = pygame.Color('Black')
-fgcolor = pygame.Color('blue')
+fgcolor = pygame.Color('Blue')
 
 # Classes
 
