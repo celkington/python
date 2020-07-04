@@ -2,12 +2,13 @@ import pygame
 pygame.init()
 
 # Variables
-width = 1275
-height = 700
+width = 1000
+height = 600
 border = 25
-VELOCITY = -1
+VELOCITY = -6
+FPS = 120
 bgcolor = pygame.Color('Black')
-fgcolor = pygame.Color('blue')
+fgcolor = pygame.Color('Blue')
 
 # Classes
 
@@ -31,15 +32,19 @@ class Ball:
         self.y = self.y + self.y_velocity
         self.show(fgcolor)
         
-        if self.x == border + Ball.RADIUS:
+        if self.x < border + Ball.RADIUS - VELOCITY:
             self.x_velocity = -self.x_velocity
-        elif self.y == height - border - Ball.RADIUS or self.y == border + Ball.RADIUS:
+        elif self.y > height - border - Ball.RADIUS + VELOCITY or self.y < border + Ball.RADIUS - VELOCITY:
             self.y_velocity = -self.y_velocity
-        elif self.x == width - border - Ball.RADIUS and abs(self.y + self.y_velocity - paddle.y) < Paddle.pad_height:
+        elif self.x > width - border - Ball.RADIUS - VELOCITY and abs(self.y + self.y_velocity - paddle.y) < Paddle.pad_height:
             self.x_velocity = -self.x_velocity
+        elif self.x > width + self.RADIUS - VELOCITY:
+            pygame.time.delay(3000)
+            self.x = width//2
+            self.y = height//2
 
 class Paddle:
-    pad_height = height// 7
+    pad_height = height// 6
     def __init__(self,x,y, y_velocity):
         self.x = x
         self.y = y
@@ -74,7 +79,10 @@ pygame.draw.rect(screen, fgcolor, pygame.Rect((0, height - border), ((width), (b
 pygame.draw.rect(screen, fgcolor, pygame.Rect((0, 0), ((border), (height))))
 ball_1.show(fgcolor)
 paddle.show(fgcolor)
+clock = pygame.time.Clock()
+
 while 1:
+    clock.tick(FPS)
     e = pygame.event.poll()
     if e.type == pygame.QUIT:
         quit()
