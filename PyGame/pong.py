@@ -5,7 +5,7 @@ pygame.init()
 width = 1000
 height = 600
 border = 25
-VELOCITY = -7
+VELOCITY = -6
 FPS = 120
 bgcolor = pygame.Color('Black')
 fgcolor = pygame.Color('Blue')
