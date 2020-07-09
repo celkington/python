@@ -5,7 +5,7 @@ import re
 
 def password_validate(form, field):
         if len(field.data) < 8:
-            raise ValidationError("Make sure your password is at lest 8 characters. ")
+            raise ValidationError("Make sure your password is at lest 8 characters.")
         elif re.search('\d', field.data) is None:
             raise ValidationError("Make sure your password contains a number.")
         elif re.search('[A-Z]', field.data) is None:
