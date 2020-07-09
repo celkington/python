@@ -1,9 +1,9 @@
-from flask import Flask, render_template, url_for, flash, redirect
-from forms import RegistrationForm, LoginForm
-app = Flask(__name__)
+from flask import render_template, url_for, flash, redirect
+from flaskapp import app
+from flaskapp.forms import RegistrationForm, LoginForm
+from flaskapp.models import User, Post
 
-app.config['SECRET_KEY'] = '8a74d6b55af7824f00b861cf3b445fbe' # A secret key signs cookies when a user visits the site and therefore prevents cookie tampering
-
+# Dummy post data
 posts = [
     {
      'author': 'Chris',
@@ -19,6 +19,8 @@ posts = [
      }
     ]
 
+
+# Webpages within the website
 @app.route('/')
 @app.route('/home')
 def home():
@@ -46,10 +48,4 @@ def login():
         else:
             flash('Account not found. Please check your username and password and try again.', 'danger')
     return render_template('login.html', title='Login', form=form)
-
-if __name__== '__main__':
-    app.run(debug= True)
-    
-
-
 
