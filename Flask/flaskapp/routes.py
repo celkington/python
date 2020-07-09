@@ -3,7 +3,6 @@ from flaskapp import app
 from flaskapp.forms import RegistrationForm, LoginForm
 from flaskapp.models import User, Post
 
-# Dummy post data
 posts = [
     {
      'author': 'Chris',
