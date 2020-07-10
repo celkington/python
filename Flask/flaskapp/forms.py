@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flaskapp.models import User
 import re
 
 def password_validate(form, field):
@@ -26,6 +27,15 @@ class RegistrationForm(FlaskForm):
                              validators= [DataRequired(), EqualTo('password', message= 'This does not match your previous password.')])
     submit = SubmitField('Register')
     
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken. Please choose a different one.')
+    
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That email is taken. Please choose a different one.')
 
 class LoginForm(FlaskForm):
     email = StringField('Email',
