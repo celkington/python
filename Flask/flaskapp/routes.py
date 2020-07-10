@@ -1,9 +1,11 @@
+# Imports
 from flask import render_template, url_for, flash, redirect, request
 from flaskapp import app, db, bcrypt
 from flaskapp.forms import RegistrationForm, LoginForm
 from flaskapp.models import User, Post
 from flask_login import login_user, current_user, logout_user, login_required
 
+# Dummy posts
 posts = [
     {
      'author': 'Chris',
@@ -20,7 +22,7 @@ posts = [
     ]
 
 
-# Webpages within the website
+# Routes in the webpage
 @app.route('/')
 @app.route('/home')
 def home():
