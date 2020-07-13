@@ -1,10 +1,11 @@
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from flaskapp.models import User
-from flask_login import current_user
 import re
+from wtforms.validators import (ValidationError, DataRequired, EqualTo, 
+                                Length, Email)
+from wtforms import StringField, PasswordField, SubmitField, BooleanField
+from flask_wtf import FlaskForm
+from flaskapp.models import User
+from flask_wtf.file import FileField, FileAllowed 
+from flask_login import current_user
 
 def password_validate(form, field):
         if len(field.data) < 8:
@@ -17,6 +18,7 @@ def password_validate(form, field):
             raise ValidationError("Make sure your password contains a lower case letter.")
         elif re.search('[!£$_=+\'?><,.{}\[\]%|`¬^&*@~#\"]', field.data) is None:
             raise ValidationError("Make sure your password contains a special character.")
+
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username',
@@ -68,13 +70,7 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
-  
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
-    
-    
+                
 class RequestResetForm(FlaskForm):
     email = StringField('Email', 
                         validators=[DataRequired(), Email()])
